@@ -1,6 +1,6 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
-let cardImagePopup = document.querySelector('.popup_type_image');
+const cardImagePopup = document.querySelector('.popup_type_image');
 
 function removeCard(item) {
     item.remove();
@@ -12,14 +12,6 @@ function likeTheCard(button) {
 
 function removeTheLike(button) {
     button.classList.remove('card__like-button_is-active');
-};
-
-function openImagePopup(cardPicture, title) {
-    const popupImage = cardImagePopup.querySelector('.popup__image');
-    popupImage.src = cardPicture.src;
-    const popupPlaceName = cardImagePopup.querySelector('.popup__caption');
-    popupPlaceName.textContent = title.textContent;
-    cardImagePopup.classList.add('popup_is-opened');
 };
 
 function createCard(card, deleteCard, pressLikeButton, deleteTheLike, openCardImagePopup) {
@@ -52,4 +44,4 @@ function createCard(card, deleteCard, pressLikeButton, deleteTheLike, openCardIm
     return cardElement;
 };
 
-export { cardTemplate, cardImagePopup, createCard, removeCard, likeTheCard, removeTheLike, openImagePopup };
+export { cardTemplate, cardImagePopup, createCard, removeCard, likeTheCard, removeTheLike };

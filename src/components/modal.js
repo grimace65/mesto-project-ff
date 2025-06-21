@@ -1,39 +1,44 @@
-function popupOpening(button, popup) {
-    button.addEventListener('click', function() {
-        popup.classList.add('popup_is-opened');
-    });
-};
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 
-function popupClosing(items) {
-    items.forEach(function(popup) {
-        popup.classList.remove('popup_is-opened');
-    })
-};
+const nameInput = document.querySelector('.popup__input_type_name');
+const jobInput = document.querySelector('.popup__input_type_description');
 
-const popups = document.querySelectorAll('.popup');
-const popupsArr = Array.from(popups);
-const addButton = document.querySelector('.profile__add-button');
+const somePopup = document.querySelector('.popup');
 
-function closingByEsc() {
-    document.addEventListener('keydown', function(evt) {
-        const popupIsOpened = popupsArr.some(function(popup) {
-            return popup.classList.contains('popup_is-opened');
-        });
-        if(popupIsOpened) {
-            if (evt.key === 'Escape') {
-                popupClosing(popups);
-            }
-        };
-    });
-};
-function clickOnOverlay() {
-    document.addEventListener('click', function(evt) {
-        const clickOnPopup = evt.target.classList.contains('popup');
-        const clickOnAddButton = evt.target.contains(addButton);
-        if (clickOnPopup && !clickOnAddButton) {
-            popupClosing(popups);
+function handleEscape(evt) {
+    if (evt.key === 'Escape') {
+        const openedPopup = document.querySelector('.popup_is-opened');
+        if (openedPopup) {
+            closePopup(openedPopup);
         }
-    });
-}
+    }
+};
 
-export { popupOpening, popupClosing, closingByEsc, clickOnOverlay, popups, popupsArr, addButton };
+const clickOnOverlay = function(evt) {
+    if (!evt || !evt.target) return;
+    if (evt.target.classList.contains('popup')) {
+        const openedPopup = document.querySelector('.popup_is-opened');
+        if (openedPopup) {
+            closePopup(openedPopup);
+        }
+    }
+};
+
+function openPopup(popup) {
+    if (popup.classList.contains('popup_type_edit')) {
+        nameInput.value = profileTitle.textContent;
+        jobInput.value = profileDescription.textContent;
+    }
+    popup.classList.add('popup_is-opened');
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('mousedown', clickOnOverlay);
+};
+
+function closePopup(popup) {
+    popup.classList.remove('popup_is-opened');
+    document.removeEventListener('keydown', handleEscape);
+    document.removeEventListener('mousedown', clickOnOverlay);
+};
+
+export { openPopup, closePopup, handleEscape, clickOnOverlay, somePopup, profileTitle, profileDescription, nameInput, jobInput };
