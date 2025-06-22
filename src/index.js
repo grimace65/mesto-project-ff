@@ -8,13 +8,19 @@ import logo from './images/logo.svg';
 
 import { cardTemplate, cardImagePopup, createCard, removeCard, likeTheCard, removeTheLike } from './components/card.js';
 
-import { openPopup, closePopup, handleEscape, clickOnOverlay, somePopup, profileTitle, profileDescription, nameInput, jobInput } from './components/modal.js';
+import { openPopup, closePopup, handleEscape, clickOnOverlay } from './components/modal.js';
 
 const cardsList = document.querySelector('.places__list');
 
 const editProfileButton = document.querySelector('.profile__edit-button');
 
 const editProfilePopup = document.querySelector('.popup_type_edit');
+
+const nameInput = document.querySelector('.popup__input_type_name');
+const jobInput = document.querySelector('.popup__input_type_description');
+
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 
 const newCardForm = document.forms.newplace;
 const newPlacePopup = document.querySelector('.popup_type_new-card');
@@ -51,20 +57,18 @@ function openImagePopup(cardPicture, title) {
     openPopup(cardImagePopup);
 };
 
-closeButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-        const openedPopup = document.querySelector('.popup_is-opened');
-        if (openedPopup) {
-            closePopup(openedPopup);
-        }
-    })
-});
+closeButtons.forEach((button) => {
+    const popup = button.closest('.popup');
+    button.addEventListener('click', () => closePopup(popup));
+  });  
 
 addButton.addEventListener('click', function(evt) {
     openPopup(newPlacePopup);
 });
 
 editProfileButton.addEventListener('click', function(evt) {
+    nameInput.value = profileTitle.textContent;
+    jobInput.value = profileDescription.textContent;
     openPopup(editProfilePopup);
 });
 
@@ -74,9 +78,7 @@ function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
-    closePopup(somePopup);
+    closePopup(editProfilePopup);
 }
 
 profileForm.addEventListener('submit', handleProfileFormSubmit);
-
-clickOnOverlay();
