@@ -44,7 +44,7 @@ newCardForm.addEventListener('submit', function(evt) {
         name: cardNameInput.value,
         link: cardUrlInput.value
     };
-    const newCardElement = createCard(newCard, removeCard);
+    const newCardElement = createCard(newCard, removeCard, likeTheCard, removeTheLike, openImagePopup); //извините за такую глупую ошибку:_)
     cardsList.prepend(newCardElement);
     closePopup(newPlacePopup);
     newCardForm.reset();
