@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -19,4 +20,35 @@
   .profile__image {
     margin-right: 0;
   }
+}
+
+.profile__image:hover {
+  cursor: pointer;
+}
+
+.avatar-background {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.avatar-icon {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+  top: calc(50% - 13px);
+  left: calc(50% - 13px);
+
+}
+
+.profile__image:hover .avatar-icon {
+  opacity: 1;
+}
+
+.profile__image:hover .avatar-background {
+  background-color: rgba(0, 0, 0, 0.5);
 }

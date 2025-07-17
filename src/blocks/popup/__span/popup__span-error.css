@@ -1,0 +1,11 @@
+.popup__span-error {
+    display: none;
+    font-weight: 400;
+    font-size: 12px;
+    margin-block-start: 5px;
+}
+
+.popup__span-error-is-active {
+    display: block;
+    color: red;
+}
