@@ -47,12 +47,40 @@ const validationConfig = {
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_disabled',
+    spanErrorClass: 'popup__span-error-is-active',
+    unactiveButtonClass: 'popup__button_disabled',
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
 };
 
-const currentUserId = '90101c477853481db570e27a';
+let currentUserId;
+
+function getCurrentUserId() {
+    return fetch('https://nomoreparties.co/v1/wff-cohort-42/users/me', {
+        headers: {
+            authorization: '0f72db50-920a-4c6b-b438-1dbd99f7a6f5',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then((res) => {
+        return res.json()
+    })
+    .then((user) => {
+        currentUserId = user._id;
+        return user
+    })
+    .catch(err => {
+        console.log('Ошибка при получении:', err);
+    });
+}
+
+getCurrentUserId()
+.then(user => {
+    console.log('Данные пользователя:', user);
+})
+.catch(err => {
+    console.error('Ошибка:', err);
+});
 
 const profileForm = document.forms.editprofile;
 
@@ -72,6 +100,9 @@ Promise.all([getProfileInfo(), getCards()])
     });
     profileTitle.textContent = user.name;
     profileDescription.textContent = user.about;
+})
+.catch(err => {
+    console.log('Ошибка при сохранении:', err);
 });
 
 function renderLoading(isLoading, initialText, button) {
@@ -98,6 +129,7 @@ function handleNewCardFormSubmit(evt) {
         };
         const newCardElement = createCard(newCard, handleDeleteCLick, handleLikeClick, openImagePopup, currentUserId);
         cardsList.prepend(newCardElement);
+        newCardForm.reset();
         closePopup(newPlacePopup);
     })
     .catch(err => {
@@ -106,15 +138,14 @@ function handleNewCardFormSubmit(evt) {
     .finally(() => {
         renderLoading(false, 'Сохранить', popupButton);
     })
-    newCardForm.reset();
 };
 
 newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 
-function openImagePopup(cardPicture, title) {
-    popupImage.src = cardPicture.src;
-    popupImage.alt = cardPicture.alt;
-    popupPlaceName.textContent = title.textContent;
+function openImagePopup(card) {
+    popupImage.src = card.link;
+    popupImage.alt = card.name;
+    popupPlaceName.textContent = card.name;
     openPopup(cardImagePopup);
 };
 

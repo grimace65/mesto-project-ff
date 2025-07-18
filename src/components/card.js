@@ -19,18 +19,18 @@ function handleDeleteCLick(cardId, cardELem) {
 };
 
 async function handleLikeClick(button, cardData, userId, cardId) {
-    const isLiked = cardData.likes.some((liker) => liker._id === userId);
+    const isLiked = button.classList.contains("card__like-button_is-active");
     try {
         if (isLiked) {
-            await unlikeTheCard(cardId);
-            cardData.likes = cardData.likes.filter(liker => liker._id !== userId);
+            const updatedCard = await unlikeTheCard(cardId);
+            console.log('привет');
             button.classList.remove('card__like-button_is-active');
+            return updatedCard.likes.length;
         } else {
-            await putLikeToCard(cardId);
-            cardData.likes.push({ _id: userId });
+            const updatedCard = await putLikeToCard(cardId);
             button.classList.add('card__like-button_is-active');
+            return updatedCard.likes.length;
         };
-        return cardData.likes.length;
     } catch (err) {
         console.error('Ошибка:', err);
         return cardData.likes.length;
@@ -71,7 +71,7 @@ function createCard(card, deleteTheCard, clickOnLike, openCardImagePopup, myId) 
     });
 
     image.addEventListener('click', function() {
-        openCardImagePopup(image, cardTitle);
+        openCardImagePopup(card);
     });
 
     return cardElement;
