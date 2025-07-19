@@ -6,7 +6,7 @@ import card2 from './images/card_2.jpg';
 import card3 from './images/card_3.jpg';
 import logo from './images/logo.svg';
 
-import { cardTemplate, cardImagePopup, createCard, removeCard, handleDeleteCLick, handleLikeClick } from './components/card.js';
+import { cardTemplate, createCard, removeCard, handleDeleteCLick, handleLikeClick } from './components/card.js';
 
 import { openPopup, closePopup, handleEscape, clickOnOverlay } from './components/modal.js';
 
@@ -15,6 +15,8 @@ import { enableValidation, clearValidation } from './components/validation.js';
 import { getCards, getProfileInfo, saveEditions, addNewCard, editAvatar } from './components/api.js';
 
 const cardsList = document.querySelector('.places__list');
+
+const cardImagePopup = document.querySelector('.popup_type_image');
 
 const editProfileButton = document.querySelector('.profile__edit-button');
 
@@ -55,33 +57,6 @@ const validationConfig = {
 
 let currentUserId;
 
-function getCurrentUserId() {
-    return fetch('https://nomoreparties.co/v1/wff-cohort-42/users/me', {
-        headers: {
-            authorization: '0f72db50-920a-4c6b-b438-1dbd99f7a6f5',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then((res) => {
-        return res.json()
-    })
-    .then((user) => {
-        currentUserId = user._id;
-        return user
-    })
-    .catch(err => {
-        console.log('Ошибка при получении:', err);
-    });
-}
-
-getCurrentUserId()
-.then(user => {
-    console.log('Данные пользователя:', user);
-})
-.catch(err => {
-    console.error('Ошибка:', err);
-});
-
 const profileForm = document.forms.editprofile;
 
 editProfileButton.addEventListener('click', function(evt) {
@@ -94,6 +69,7 @@ editProfileButton.addEventListener('click', function(evt) {
 Promise.all([getProfileInfo(), getCards()])
 .then(([user, cards]) => {
     console.log('Данные пользователя:', user);
+    currentUserId = user._id;
     cards.forEach((card) => {
         const cardItem = createCard(card, handleDeleteCLick, handleLikeClick, openImagePopup, currentUserId);
         cardsList.append(cardItem);

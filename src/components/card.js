@@ -2,8 +2,6 @@ import { deleteCard, putLikeToCard, unlikeTheCard } from './api.js';
 
 const cardTemplate = document.querySelector('#card-template').content;
 
-const cardImagePopup = document.querySelector('.popup_type_image');
-
 function removeCard(item) {
     item.remove();
 };
@@ -77,4 +75,4 @@ function createCard(card, deleteTheCard, clickOnLike, openCardImagePopup, myId) 
     return cardElement;
 };
 
-export { cardTemplate, cardImagePopup, createCard, removeCard, handleDeleteCLick, handleLikeClick };
+export { cardTemplate, createCard, removeCard, handleDeleteCLick, handleLikeClick };

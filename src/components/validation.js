@@ -79,7 +79,7 @@ function clearValidation(formElement, config) {
         hideInputError(formElement, inputElement, config);
     });
     buttonElement.disabled = false;
-    buttonElement.classList.remove('popup__button_disabled');
+    buttonElement.classList.remove(config.unactiveButtonClass);
     toggleButtonState(inputList, buttonElement, config);
 };
 
